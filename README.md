@@ -3,6 +3,7 @@
 ### by Daniele Verì
 ___
 ## Intructions
+- ### Build all: `make`
 - ### Build openMP implementation: `make openmp`
 - ### Build CUDA implementation: `make cuda`
 - ### Clean objects: `make clean`

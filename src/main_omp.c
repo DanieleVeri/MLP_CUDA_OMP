@@ -17,6 +17,7 @@ int main(int argc, char** argv)
         printf("Required two arguments: N and K\n");
         return EXIT_FAILURE;
     }
+    
     const int N = atoi(argv[1]);
     const int K = atoi(argv[2]);
     printf("Invoked with N=%d, K=%d, R=%d\n", N, K, R);

@@ -1,43 +1,41 @@
-DISTNAME = VeriDaniele
-CC = gcc
-CFLAGS = -Wall -g -fopenmp 
-#LFLAGS = 
+.PHONY: clean openmp cuda dist
+
 COMMON_INCLUDES = -Isrc
-COMMON_SOURCES = src/main.c
+COMMON_SOURCES = 
 
-MP_INCLUDES = $(COMMON_INCLUDES) -Isrc/openmp
+OMP_CC = gcc
+OMP_CFLAGS = -Wall -g -fopenmp 
+OMP_LIBS = -lgomp
+OMP_INCLUDES = $(COMMON_INCLUDES) -Isrc/openmp
+OMP_SRCS = $(COMMON_SOURCES) src/main_omp.c $(wildcard src/openmp/*.c)
+OMP_MAIN = mlp_mp
+
+CUDA_CC = nvcc
 CUDA_INCLUDES = $(COMMON_INCLUDES) -Isrc/cuda
-
-MP_SRCS = $(COMMON_SOURCES) src/openmp/openmp.c
-CUDA_SRCS = $(COMMON_SOURCES) src/cuda/cuda.c 
-
-MP_LIBS = -lgomp
-CUDA_LIBS = -lgomp
-
-MP_MAIN = mlp_mp
+CUDA_SRCS = $(COMMON_SOURCES) src/main_cuda.cu $(wildcard src/cuda/*.cu)
 CUDA_MAIN = mlp_cuda
 
-.PHONY: clean openmp cuda dist
 all:	openmp cuda
-openmp:	$(MP_MAIN)
+	@echo --All targets are builded
+openmp:	$(OMP_MAIN)
 	@echo --Builded target OPENMP
 cuda:	$(CUDA_MAIN)
 	@echo --Builded target CUDA
 clean:
-	$(RM) src/*.o src/**/*.o *~ $(CUDA_MAIN) $(MP_MAIN)
+	$(RM) src/*.o src/**/*.o *~ $(CUDA_MAIN) $(OMP_MAIN)
 dist: clean
-	@zip -r $(DISTNAME).zip .
+	@zip -r VeriDaniele.zip .
 	@echo --Generated zip
 
-MP_OBJS = $(MP_SRCS:.c=.o)
+MP_OBJS = $(OMP_SRCS:.c=.o)
 CUDA_OBJS = $(CUDA_SRCS:.c=.o)
 
-$(MP_MAIN): $(MP_OBJS)
-	$(CC) $(CFLAGS) $(MP_INCLUDES) -o $(MP_MAIN) $(MP_OBJS) $(LFLAGS) $(MP_LIBS)
+$(OMP_MAIN): $(MP_OBJS)
+	$(OMP_CC) $(OMP_CFLAGS) $(OMP_INCLUDES) -o $(OMP_MAIN) $(MP_OBJS) $(OMP_LIBS)
 $(CUDA_MAIN): $(CUDA_OBJS)
-	$(CC) $(CFLAGS) $(CUDA_INCLUDES) -o $(CUDA_MAIN) $(CUDA_OBJS) $(LFLAGS) $(CUDA_LIBS)
+	$(CUDA_CC) $(CUDA_INCLUDES) -o $(CUDA_MAIN) $(CUDA_OBJS)
 
-MP_OBJS:	$(MP_SRCS)
-	$(CC) $(CFLAGS) $(MP_INCLUDES) -c $<  -o $@
+MP_OBJS:	$(OMP_SRCS)
+	$(OMP_CC) $(OMP_CFLAGS) $(OMP_INCLUDES) -c $<  -o $@
 CUDA_OBJS:	$(CUDA_SRCS)
-	$(CC) $(CFLAGS) $(CUDA_INCLUDES) -c $<  -o $@
+	$(CUDA_CC) $(CUDA_INCLUDES) -c $<  -o $@
