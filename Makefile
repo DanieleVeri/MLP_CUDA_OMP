@@ -8,7 +8,7 @@ OMP_CFLAGS = -Wall -g -fopenmp
 OMP_LIBS = -lgomp
 OMP_INCLUDES = $(COMMON_INCLUDES) -Isrc/openmp
 OMP_SRCS = $(COMMON_SOURCES) src/main_omp.c $(wildcard src/openmp/*.c)
-OMP_MAIN = mlp_mp
+OMP_MAIN = mlp_omp
 
 CUDA_CC = nvcc
 CUDA_INCLUDES = $(COMMON_INCLUDES) -Isrc/cuda
@@ -27,15 +27,15 @@ dist: clean
 	@zip -r VeriDaniele.zip .
 	@echo --Generated zip
 
-MP_OBJS = $(OMP_SRCS:.c=.o)
+OMP_OBJS = $(OMP_SRCS:.c=.o)
 CUDA_OBJS = $(CUDA_SRCS:.c=.o)
 
-$(OMP_MAIN): $(MP_OBJS)
-	$(OMP_CC) $(OMP_CFLAGS) $(OMP_INCLUDES) -o $(OMP_MAIN) $(MP_OBJS) $(OMP_LIBS)
+$(OMP_MAIN): $(OMP_OBJS)
+	$(OMP_CC) $(OMP_CFLAGS) $(OMP_INCLUDES) -o $(OMP_MAIN) $(OMP_OBJS) $(OMP_LIBS)
 $(CUDA_MAIN): $(CUDA_OBJS)
 	$(CUDA_CC) $(CUDA_INCLUDES) -o $(CUDA_MAIN) $(CUDA_OBJS)
 
-MP_OBJS:	$(OMP_SRCS)
+OMP_OBJS:	$(OMP_SRCS)
 	$(OMP_CC) $(OMP_CFLAGS) $(OMP_INCLUDES) -c $<  -o $@
 CUDA_OBJS:	$(CUDA_SRCS)
 	$(CUDA_CC) $(CUDA_INCLUDES) -c $<  -o $@
