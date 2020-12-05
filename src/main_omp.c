@@ -1,11 +1,9 @@
 #include "utils/hpc.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <omp.h>
 #include "constants.h"
 #include "utils/math.h"
 #include "utils/io.h"
 #include "openmp/openmp.h"
+#include <stdio.h>
 
 int main(int argc, char** argv)
 {
