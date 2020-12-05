@@ -1,7 +1,7 @@
 .PHONY: clean openmp cuda dist
 
-COMMON_INCLUDES = -Isrc
-COMMON_SOURCES = 
+COMMON_INCLUDES = -Isrc -Isrc/utils
+COMMON_SOURCES = $(wildcard src/utils/*.c)
 
 OMP_CC = gcc
 OMP_CFLAGS = -Wall -g -fopenmp 

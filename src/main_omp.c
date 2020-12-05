@@ -1,16 +1,11 @@
+#include "utils/hpc.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <omp.h>
 #include "constants.h"
-#include "math_utils.h"
-#include "hpc.h"
-
-void say_hello(void)
-{
-    const int my_rank = omp_get_thread_num();
-    const int thread_count = omp_get_num_threads();
-    printf("Hello from thread %d of %d\n", my_rank, thread_count);
-}
+#include "utils/math.h"
+#include "utils/io.h"
+#include "openmp/openmp.h"
 
 int main(int argc, char** argv)
 {
@@ -18,30 +13,25 @@ int main(int argc, char** argv)
         printf("Required two arguments: N and K\n");
         return EXIT_FAILURE;
     }
-    
     const int N = atoi(argv[1]);
     const int K = atoi(argv[2]);
     printf("Invoked with N=%d, K=%d, R=%d\n", N, K, R);
-
-    printf("Input: random uniform\n");
-    vector_t input = vec_rand_uniform(N);
-    for (int i=0; i<N; i++) {
-        printf("%f\n", input[i]);
-    }
-    printf("Weights init: random uniform\n");
-    matrix_t weights = mat_rand_uniform(N, N-(R-1));
-    for (int i=0; i<N; i++) {
-        for (int j=0; j<N-(R-1); j++) {
-            printf("%f\t", weights[i][j]);
-        }
-        printf("\n");
+    if (N - K*(R-1) <= 0) {
+        printf("ERROR: illegal parameters: must be N > K*(%d-1)\n", R);
+        return EXIT_FAILURE;
     }
 
-    #pragma omp parallel num_threads(10) default(none)
-        say_hello();
+    vector_t input = init_vec_uniform(N);
+    print_vector(input);
 
-    free((void*) input);
-    free((void*) weights);
+    layers_t layers = init_layers_uniform(N, K);
+    print_layers(layers);
+
+    vector_t output = forward_mlp(input, layers);
+
+    free_vector(input);
+    free_layers(layers);
+    free_vector(output);
 
     return EXIT_SUCCESS;
 }
