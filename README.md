@@ -3,11 +3,14 @@
 ### by Daniele Verì
 ___
 ## Requirements
-- `build-essential`
+- `gcc` and `make` (both found in build-essential)
 - `nvcc`
 ___
 ## Intructions
-- `make`: build all
-- `make openmp`: build openMP implementation
-- `make cuda`: build CUDA implementation
-- `make clean`: clean objects
+| | |
+|-|-|
+|`make`| build all
+|`make openmp`| build openMP implementation
+|`make cuda`| build CUDA implementation
+|`make cuda_legacy`| build CUDA for arch `compute_20` (cuda version < 9)
+|`make clean`| clean objects

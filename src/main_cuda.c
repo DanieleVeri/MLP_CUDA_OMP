@@ -1,5 +1,5 @@
 #include "utils/hpc.h"
-#include "utils/math.h"
+#include "utils/model.h"
 #include "utils/io.h"
 #include "cuda/cuda.h"
 #include <stdio.h>

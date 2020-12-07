@@ -1,6 +1,6 @@
 #include "utils/hpc.h"
 #include "constants.h"
-#include "utils/math.h"
+#include "utils/model.h"
 #include "utils/io.h"
 #include "openmp/openmp.h"
 #include <stdio.h>
@@ -22,7 +22,7 @@ int main(int argc, char** argv)
     vector_t input = init_vec_uniform(N);
     print_vector(input);
 
-    layers_t layers = init_layers_uniform(N, K);
+    layers_t layers = init_layers_uniform(N, K, RELU);
     print_layers(layers);
 
     vector_t output = forward_mlp(input, layers);

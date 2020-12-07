@@ -1,5 +1,11 @@
 #include "openmp.h"
 
+static inline float id_tf(float x) { return x; }
+
+static inline float relu_tf(float x) { return (x > 0) * x; }
+
+static inline float sigm_tf(float x) { return (float) 1/(1+exp(-(double) x)); }
+
 vector_t forward_mlp(vector_t in, layers_t layers)
 {
     #pragma omp parallel

@@ -31,7 +31,6 @@ void hello_cuda()
     }
     /* Cleanup */
     cudaFree(d_a); cudaFree(d_b); cudaFree(d_c);
-
     vector_t in = init_vec_uniform(10);
     print_vector(in);
 }

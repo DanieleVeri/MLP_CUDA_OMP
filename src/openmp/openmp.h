@@ -6,7 +6,7 @@
 #include <omp.h>
 
 #include "../constants.h"
-#include "../utils/math.h"
+#include "../utils/model.h"
 
 vector_t forward_mlp(vector_t in, layers_t layers);
 

@@ -1,19 +1,24 @@
-#ifndef __MATH_UTILS__H
-#define __MATH_UTILS__H
+#ifndef __MODEL__H
+#define __MODEL__H
 
 #include <stdlib.h>
+#include <math.h>
 #include "../constants.h"
 
 typedef struct {
-    int len;
+    unsigned int len;
     float* data;
 } vector_t;
 
 typedef struct {
-    int m;
-    int n;
+    unsigned int m;
+    unsigned int n;
     float** data;
 } matrix_t;
+
+typedef enum {
+    NONE, RELU, SIGMOID
+} threshold_t;
 
 typedef struct {
     unsigned int num_layer;
@@ -27,8 +32,7 @@ void free_vector(vector_t vector);
 matrix_t init_mat_uniform(unsigned int m, unsigned int n);
 void free_matrix(matrix_t matrix);
 
-layers_t init_layers_uniform(unsigned int inputs, unsigned int num_layer);
+layers_t init_layers_uniform(unsigned int inputs, unsigned int num_layer, threshold_t threshold);
 void free_layers(layers_t layers);
-
 
 #endif
