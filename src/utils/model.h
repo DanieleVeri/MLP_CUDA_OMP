@@ -5,34 +5,48 @@
 #include <math.h>
 #include "../constants.h"
 
+// floating point precision used (float32 - IEEE 754)
+typedef float fp;
+
+// initialization types
+typedef enum {
+    ZERO, RAND_UNIFORM
+} init_t;
+
+// vector data struct
 typedef struct {
     unsigned int len;
-    float* data;
+    fp* data;
 } vector_t;
 
+vector_t new_vector(unsigned int length, init_t init_type);
+void free_vector(vector_t vector);
+
+// matrix data struct
 typedef struct {
     unsigned int m;
     unsigned int n;
-    float** data;
+    fp** data;
 } matrix_t;
 
-typedef enum {
-    NONE, RELU, SIGMOID
-} threshold_t;
+matrix_t new_matrix(unsigned int m, unsigned int n, init_t init_type);
+void free_matrix(matrix_t matrix);
 
+// model
 typedef struct {
     unsigned int num_layer;
     matrix_t* weights_list;
     vector_t* bias_list;
-} layers_t;
+} model_t;
 
-vector_t init_vec_uniform(unsigned int length);
-void free_vector(vector_t vector);
+model_t new_model(unsigned int inputs, unsigned int num_layer, init_t init_type);
+void free_model(model_t layers);
 
-matrix_t init_mat_uniform(unsigned int m, unsigned int n);
-void free_matrix(matrix_t matrix);
+// activation functions
+#define ID(x) (x)
+#define RELU(x) ((x > 0) * x) // branchless RELU
+#define SIGMOID(x) ((fp) 1/(1+exp(-(double) x)))
 
-layers_t init_layers_uniform(unsigned int inputs, unsigned int num_layer, threshold_t threshold);
-void free_layers(layers_t layers);
+#define ACTIVATION RELU
 
 #endif

@@ -6,6 +6,6 @@
 
 void print_vector(vector_t vec);
 void print_matrix(matrix_t mat);
-void print_layers(layers_t layers);
+void print_model(model_t model);
 
 #endif

@@ -4,6 +4,7 @@
 #include "utils/io.h"
 #include "openmp/openmp.h"
 #include <stdio.h>
+#include <assert.h>
 
 int main(int argc, char** argv)
 {
@@ -18,17 +19,21 @@ int main(int argc, char** argv)
         printf("ERROR: illegal parameters: must be N > K*(%d-1)\n", R);
         return EXIT_FAILURE;
     }
+    
+    srand(SEED);
 
-    vector_t input = init_vec_uniform(N);
-    print_vector(input);
+    vector_t input = new_vector(N, RAND_UNIFORM);
+    model_t model = new_model(N, K, RAND_UNIFORM);
 
-    layers_t layers = init_layers_uniform(N, K, RELU);
-    print_layers(layers);
+    double tstart = hpc_gettime();
+    vector_t output = serial_forward_mlp(input, model);
+    double tstop = hpc_gettime();
 
-    vector_t output = forward_mlp(input, layers);
+    printf("elapsed time = %f s\n\n", tstop - tstart);
+    print_vector(output);
 
     free_vector(input);
-    free_layers(layers);
+    free_model(model);
     free_vector(output);
 
     return EXIT_SUCCESS;

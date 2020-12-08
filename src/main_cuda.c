@@ -6,8 +6,9 @@
 
 int main(int argc, char** argv) 
 {
+    srand(SEED);
     hello_cuda();
-    vector_t in = init_vec_uniform(10);
+    vector_t in = new_vector(10, RAND_UNIFORM);
     print_vector(in);
     return EXIT_SUCCESS;
 }

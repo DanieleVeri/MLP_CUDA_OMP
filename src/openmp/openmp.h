@@ -8,6 +8,6 @@
 #include "../constants.h"
 #include "../utils/model.h"
 
-vector_t forward_mlp(vector_t in, layers_t layers);
+vector_t serial_forward_mlp(vector_t input, model_t model);
 
 #endif

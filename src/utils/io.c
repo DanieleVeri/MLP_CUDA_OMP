@@ -17,10 +17,10 @@ void print_matrix(matrix_t mat) {
     }
 }
 
-void print_layers(layers_t layers) {
-    printf("layers: %d\n", layers.num_layer);
-    for (unsigned int i=0; i<layers.num_layer; i++) {
-        printf("\tweights"); print_matrix(layers.weights_list[i]);
-        printf("\tbias"); print_vector(layers.bias_list[i]);
+void print_model(model_t model) {
+    printf("layers: %d\n", model.num_layer);
+    for (unsigned int i=0; i<model.num_layer; i++) {
+        printf("\tweights "); print_matrix(model.weights_list[i]);
+        printf("\tbias "); print_vector(model.bias_list[i]);
     }
 }

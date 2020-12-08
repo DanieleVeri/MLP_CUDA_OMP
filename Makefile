@@ -27,7 +27,7 @@ clean:
 
 # run targets
 run_omp_4: openmp
-	OMP_NUM_THREADS=4 ./$(OMP_MAIN) 15 2
+	OMP_NUM_THREADS=4 ./$(OMP_MAIN) 20001 5000
 run_cuda: cuda
 	./$(CUDA_MAIN)
 
