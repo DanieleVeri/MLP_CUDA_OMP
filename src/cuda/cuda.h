@@ -19,6 +19,9 @@ matrix_t h2d_matrix(matrix_t mat);
 matrix_t d2h_matrix(matrix_t d_mat);
 void device_free_matrix(matrix_t d_mat);
 
+model_t h2d_model(model_t mdl);
+void device_free_model(model_t d_mdl);
+
 #ifdef __cplusplus
 }
 #endif
