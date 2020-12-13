@@ -1,6 +1,7 @@
 .PHONY: clean openmp cuda dist
 CC = gcc 
-CFLAGS = -std=c99 -Wall -Wpedantic -g
+CFLAGS = -std=c99 -Wall -Wpedantic -g 
+#assembler: -S -ffunction-sections
 OMP_CFLAGS = -fopenmp 
 OMP_LIBS = -lgomp -lm
 OMP_INCLUDES = -Isrc -Isrc/utils -Isrc/openmp
@@ -27,9 +28,9 @@ clean:
 
 # run targets
 run_omp_4: openmp
-	OMP_NUM_THREADS=4 ./$(OMP_MAIN) 20001 5000
+	OMP_NUM_THREADS=4 ./$(OMP_MAIN) 85 20
 run_cuda: cuda
-	./$(CUDA_MAIN)
+	./$(CUDA_MAIN) 85 20
 
 dist: clean
 	@zip -r VeriDaniele.zip .

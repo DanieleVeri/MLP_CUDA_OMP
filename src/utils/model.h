@@ -2,11 +2,10 @@
 #define __MODEL__H
 
 #include <stdlib.h>
+#include <assert.h>
 #include <math.h>
-#include "../constants.h"
 
-// floating point precision used (float32 - IEEE 754)
-typedef float fp;
+#include "../constants.h"
 
 // initialization types
 typedef enum {
@@ -16,37 +15,41 @@ typedef enum {
 // vector data struct
 typedef struct {
     unsigned int len;
-    fp* data;
-} vector_t;
+    float* data;
+} vector_s;
+typedef vector_s* vector_t;
 
 vector_t new_vector(unsigned int length, init_t init_type);
 void free_vector(vector_t vector);
+void assert_equal_vector(vector_t v1, vector_t v2);
 
 // matrix data struct
 typedef struct {
     unsigned int m;
     unsigned int n;
-    fp** data;
-} matrix_t;
+    float** data;
+} matrix_s;
+typedef matrix_s* matrix_t;
 
 matrix_t new_matrix(unsigned int m, unsigned int n, init_t init_type);
 void free_matrix(matrix_t matrix);
+void assert_equal_matrix(matrix_t m1, matrix_t m2);
 
 // model
 typedef struct {
     unsigned int num_layer;
     matrix_t* weights_list;
     vector_t* bias_list;
-} model_t;
+} model_s;
+typedef model_s* model_t;
 
 model_t new_model(unsigned int inputs, unsigned int num_layer, init_t init_type);
 void free_model(model_t layers);
+matrix_t serial_forward_mlp(matrix_t input_batch, model_t model);
 
-// activation functions
-#define ID(x) (x)
-#define RELU(x) ((x > 0) * x) // branchless RELU
-#define SIGMOID(x) ((fp) 1/(1+exp(-(double) x)))
+// branchless RELU
+#define RELU(x, disable) ((x) * ((x) > 0 || (disable)))
 
-#define ACTIVATION RELU
+#define EPS 1e-6
 
 #endif

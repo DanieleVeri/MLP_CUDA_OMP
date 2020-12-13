@@ -8,6 +8,6 @@
 #include "../constants.h"
 #include "../utils/model.h"
 
-vector_t serial_forward_mlp(vector_t input, model_t model);
+matrix_t omp1_forward_mlp(matrix_t input_batch, model_t model);
 
 #endif

@@ -4,7 +4,9 @@
 // random seed
 #define SEED 42
 
-// 1D convolution window length
+// local connections
 #define R 5
+
+#define BATCH_SIZE 1000
 
 #endif

@@ -7,10 +7,15 @@ ___
 - `nvcc`
 ___
 ## Intructions
-| | |
+|command|description|
 |-|-|
 |`make`| build all
 |`make openmp`| build openMP implementation
 |`make cuda`| build CUDA implementation
 |`make cuda_legacy`| build CUDA for arch `compute_20` (cuda version < 9)
 |`make clean`| clean objects
+___
+## TODO
+- cuda
+- performance considerations in logging
+- debug target make (disable also cuda err check)

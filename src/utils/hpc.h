@@ -29,83 +29,84 @@
 #ifndef HPC_H
 #define HPC_H
 
-    #if defined(_OPENMP)
-        #include <omp.h>
-        /******************************************************************************
-        * OpenMP timing routines
-        ******************************************************************************/
-        double hpc_gettime( void )
-        {
-            return omp_get_wtime();
-        }
+#if defined(_OPENMP)
+#include <omp.h>
+/******************************************************************************
+ * OpenMP timing routines
+ ******************************************************************************/
+double hpc_gettime( void )
+{
+    return omp_get_wtime();
+}
 
-    #elif defined(MPI_Init)
-        /******************************************************************************
-        * MPI timing routines
-        ******************************************************************************/
-        double hpc_gettime( void )
-        {
-            return MPI_Wtime();
-        }
-    #else
-        /******************************************************************************
-        * POSIX-based timing routines
-        ******************************************************************************/
-        #if _XOPEN_SOURCE < 600
-            #define _XOPEN_SOURCE 600
-        #endif
-        #include <time.h>
+#elif defined(MPI_Init)
+/******************************************************************************
+ * MPI timing routines
+ ******************************************************************************/
+double hpc_gettime( void )
+{
+    return MPI_Wtime();
+}
 
-        double hpc_gettime( void )
-        {
-            struct timespec ts;
-            clock_gettime(CLOCK_MONOTONIC, &ts );
-            return ts.tv_sec + (double)ts.tv_nsec / 1e9;
-        }
-    #endif
+#else
+/******************************************************************************
+ * POSIX-based timing routines
+ ******************************************************************************/
+#if _XOPEN_SOURCE < 600
+#define _XOPEN_SOURCE 600
+#endif
+#include <time.h>
 
-    #ifdef __CUDACC__
+double hpc_gettime( void )
+{
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts );
+    return ts.tv_sec + (double)ts.tv_nsec / 1e9;
+}
+#endif
 
-        #include <stdio.h>
-        #include <stdlib.h>
+#ifdef __CUDACC__
 
-        /* from https://gist.github.com/ashwin/2652488 */
+#include <stdio.h>
+#include <stdlib.h>
 
-        #define cudaSafeCall( err ) __cudaSafeCall( err, __FILE__, __LINE__ )
-        #define cudaCheckError()    __cudaCheckError( __FILE__, __LINE__ )
+/* from https://gist.github.com/ashwin/2652488 */
 
-        inline void __cudaSafeCall( cudaError err, const char *file, const int line )
-        {
-            #ifndef NO_CUDA_CHECK_ERROR
-                if ( cudaSuccess != err ) {
-                    fprintf( stderr, "cudaSafeCall() failed at %s:%i : %s\n",
-                            file, line, cudaGetErrorString( err ) );
-                    abort();
-                }
-            #endif
-        }
+#define cudaSafeCall( err ) __cudaSafeCall( err, __FILE__, __LINE__ )
+#define cudaCheckError()    __cudaCheckError( __FILE__, __LINE__ )
 
-        inline void __cudaCheckError( const char *file, const int line )
-        {
-        #ifndef NO_CUDA_CHECK_ERROR
-            cudaError err = cudaGetLastError();
-            if ( cudaSuccess != err ) {
-                fprintf( stderr, "cudaCheckError() failed at %s:%i : %s\n",
-                        file, line, cudaGetErrorString( err ) );
-                abort();
-            }
+inline void __cudaSafeCall( cudaError err, const char *file, const int line )
+{
+#ifndef NO_CUDA_CHECK_ERROR
+    if ( cudaSuccess != err ) {
+        fprintf( stderr, "cudaSafeCall() failed at %s:%i : %s\n",
+                 file, line, cudaGetErrorString( err ) );
+        abort();
+    }
+#endif
+}
 
-            /* More careful checking. However, this will affect performance.
-            Comment away if needed. */
-            err = cudaDeviceSynchronize();
-            if( cudaSuccess != err ) {
-                fprintf( stderr, "cudaCheckError() with sync failed at %s:%i : %s\n",
-                        file, line, cudaGetErrorString( err ) );
-                abort();
-            }
-        #endif
-        }
+inline void __cudaCheckError( const char *file, const int line )
+{
+#ifndef NO_CUDA_CHECK_ERROR
+    cudaError err = cudaGetLastError();
+    if ( cudaSuccess != err ) {
+        fprintf( stderr, "cudaCheckError() failed at %s:%i : %s\n",
+                 file, line, cudaGetErrorString( err ) );
+        abort();
+    }
 
-    #endif
+    /* More careful checking. However, this will affect performance.
+       Comment away if needed. */
+    err = cudaDeviceSynchronize();
+    if( cudaSuccess != err ) {
+        fprintf( stderr, "cudaCheckError() with sync failed at %s:%i : %s\n",
+                 file, line, cudaGetErrorString( err ) );
+        abort();
+    }
+#endif
+}
+
+#endif
 
 #endif
