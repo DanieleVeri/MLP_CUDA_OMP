@@ -30,7 +30,7 @@ clean:
 run_omp_4: openmp
 	OMP_NUM_THREADS=4 ./$(OMP_MAIN) 800000 100
 run_cuda: cuda
-	./$(CUDA_MAIN) 100000 50
+	./$(CUDA_MAIN) 800000 50
 
 dist: clean
 	@zip -r VeriDaniele.zip .

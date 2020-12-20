@@ -52,6 +52,6 @@ matrix_t serial_forward_mlp(matrix_t input_batch, model_t model);
 #define SIGM(x) (1/(1+exp((x))))
 #define ACTIVATION SIGM
 
-#define EPS 1e-6
+#define EPS 1e-5
 
 #endif

@@ -98,12 +98,11 @@ matrix_t h2d_matrix(matrix_t mat) {
     ASSERT_NO_ERR(cudaMalloc((void **)&d_data, mat->m*sizeof(float*)));
     ASSERT_NO_ERR(cudaMalloc((void **)&d_blk, mat->m*mat->n*sizeof(float)));
     ASSERT_NO_ERR(cudaMemcpy(d_blk, mat->data[0], mat->m*mat->n*sizeof(float), cudaMemcpyHostToDevice));
-    printf("for 1\n");
+    float* addr[mat->m];
     for (unsigned int i=0; i<mat->m; i++) {
-        float* p =  &d_blk[i*mat->n];
-        ASSERT_NO_ERR(cudaMemcpy(&d_data[i], &p, sizeof(float*), cudaMemcpyHostToDevice));
+        addr[i] = &d_blk[i*mat->n];
     }
-    printf("for 2\n");
+    ASSERT_NO_ERR(cudaMemcpy(d_data, addr, mat->m*sizeof(float*), cudaMemcpyHostToDevice));
     ASSERT_NO_ERR(cudaMemcpy(&d_mat->data, &d_data, sizeof(float**), cudaMemcpyHostToDevice));
     return d_mat;
 }
