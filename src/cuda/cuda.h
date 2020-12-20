@@ -11,6 +11,8 @@ extern "C" {
 
 matrix_t cuda1_forward_mlp(matrix_t input_batch, model_t model);
 
+void test_device_mem_leak();
+
 vector_t h2d_vector(vector_t vec);
 vector_t d2h_vector(vector_t d_vec);
 void device_free_vector(vector_t d_vec);

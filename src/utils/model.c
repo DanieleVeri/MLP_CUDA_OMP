@@ -36,9 +36,10 @@ matrix_t new_matrix(unsigned int m, unsigned int n, init_t init_type)
 {
     matrix_t mat = malloc(sizeof(vector_s));
     mat->m = m; mat->n = n;
+    float* blk = (float*) malloc(m * n * sizeof(float));
     mat->data = (float**) malloc(m * sizeof(float*));
     for (unsigned int i=0; i<m; i++) {
-        mat->data[i] = (float*) malloc(n * sizeof(float));
+        mat->data[i] = &(blk[i*n]);
         for (unsigned int j=0; j<n; j++) {
             switch (init_type)
             {
@@ -56,9 +57,7 @@ matrix_t new_matrix(unsigned int m, unsigned int n, init_t init_type)
 
 void free_matrix(matrix_t matrix)
 {
-    for (unsigned int i=0; i<matrix->m; i++) {
-        free(matrix->data[i]);
-    }
+    free(matrix->data[0]); //free blk
     free(matrix->data);
     free(matrix);
 }
@@ -103,7 +102,6 @@ matrix_t serial_forward_mlp(matrix_t input_batch, model_t model)
     // 1. layer loop (not parallelizable)
     for (unsigned int i=0; i<model->num_layer; i++) {
         const unsigned int out_len = model->bias_list[i]->len;
-        const unsigned int disable_relu = i == last_layer;
         const float** w = (const float**) model->weights_list[i]->data;
         const float* b = (const float*) model->bias_list[i]->data;
         matrix_t next_result = new_matrix(batch_size, out_len, ZERO);
@@ -116,7 +114,7 @@ matrix_t serial_forward_mlp(matrix_t input_batch, model_t model)
                 for (unsigned int k=0; k<R; k++) {
                     sum += w[j][k] * last_result->data[bn][j+k];
                 }
-                next_result->data[bn][j] = RELU(sum, disable_relu);
+                next_result->data[bn][j] = (i != last_layer) ? ACTIVATION(sum) : sum;
             }
         }
         if (i > 0) free_matrix(last_result);

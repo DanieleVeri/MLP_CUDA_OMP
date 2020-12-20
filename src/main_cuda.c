@@ -25,25 +25,24 @@ int main(int argc, char** argv)
     
     srand(SEED);
 
+    //test_device_mem_leak();
+
     matrix_t input_batch = new_matrix(BATCH_SIZE, N, RAND_UNIFORM);
     model_t model = new_model(N, K, RAND_UNIFORM);
     printf("Created input batch\n\n");
-    //print_matrix(input_batch);
 
     // serial
     double tstart = hpc_gettime();
     matrix_t output_serial = serial_forward_mlp(input_batch, model);
     double tstop = hpc_gettime();
-    printf("Serial elapsed time = %f s\n\n", tstop - tstart);
-    //print_matrix(output_serial);
+    printf("Serial time elapsed = %f s\n\n", tstop - tstart);
 
     // p1
     tstart = hpc_gettime();
     matrix_t output_p1 = cuda1_forward_mlp(input_batch, model);
     tstop = hpc_gettime();
-    printf("P1 elapsed time = %f s\n\n", tstop - tstart);
-    //print_matrix(output_p1);
-
+    printf("P1 total time elapsed = %f s\n\n", tstop - tstart);
+    
     assert_equal_matrix(output_serial, output_p1);
     printf("Test OK\n");
 
