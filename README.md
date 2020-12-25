@@ -11,11 +11,11 @@ ___
 |-|-|
 |`make`| build all
 |`make openmp`| build openMP implementation
+|`make openmp_dbg`| build openMP debug
 |`make cuda`| build CUDA implementation
+|`make cuda_dbg`| build CUDA debug
 |`make cuda_legacy`| build CUDA for arch `compute_20` (cuda version < 9)
 |`make clean`| clean objects
 ___
 ## TODO
-- cuda
 - performance considerations in logging
-- debug target make (disable also cuda err check)

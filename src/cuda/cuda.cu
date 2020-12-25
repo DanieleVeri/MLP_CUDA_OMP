@@ -36,7 +36,7 @@ matrix_t cuda1_forward_mlp(matrix_t input_batch, model_t model)
     
     double tstart = hpc_gettime();
     int *d_layer;
-    ASSERT_NO_ERR(cudaMalloc((void **)&d_layer, sizeof(int)));
+    ASSERT_NO_ERR(cudaMalloc((void**)&d_layer, sizeof(int)));
     for (int layer=0; layer<model->num_layer; layer++) {
         ASSERT_NO_ERR(cudaMemcpy(d_layer, &layer, sizeof(int), cudaMemcpyHostToDevice));
         ASSERT_NO_ERR(cudaMemcpy(&(d_out->n), &(model->bias_list[layer]->len), sizeof(int), cudaMemcpyHostToDevice));
@@ -63,10 +63,10 @@ matrix_t cuda1_forward_mlp(matrix_t input_batch, model_t model)
 
 vector_t h2d_vector(vector_t vec) {
     vector_t d_vec;
-    ASSERT_NO_ERR(cudaMalloc((void **)&d_vec, sizeof(vector_s)));
+    ASSERT_NO_ERR(cudaMalloc((void**)&d_vec, sizeof(vector_s)));
     ASSERT_NO_ERR(cudaMemcpy(&(d_vec->len), &(vec->len), sizeof(int), cudaMemcpyHostToDevice));
     float* d_data;
-    ASSERT_NO_ERR(cudaMalloc((void **)&d_data, vec->len*sizeof(float)));
+    ASSERT_NO_ERR(cudaMalloc((void**)&d_data, vec->len*sizeof(float)));
     ASSERT_NO_ERR(cudaMemcpy(d_data, vec->data, vec->len*sizeof(float), cudaMemcpyHostToDevice));
     ASSERT_NO_ERR(cudaMemcpy(&d_vec->data, &d_data, sizeof(float*), cudaMemcpyHostToDevice));
     return d_vec;
@@ -90,13 +90,13 @@ void device_free_vector(vector_t d_vec) {
 
 matrix_t h2d_matrix(matrix_t mat) {
     matrix_t d_mat;
-    ASSERT_NO_ERR(cudaMalloc((void **)&d_mat, sizeof(matrix_s)));
+    ASSERT_NO_ERR(cudaMalloc((void**)&d_mat, sizeof(matrix_s)));
     ASSERT_NO_ERR(cudaMemcpy(&(d_mat->m), &(mat->m), sizeof(unsigned int), cudaMemcpyHostToDevice));
     ASSERT_NO_ERR(cudaMemcpy(&(d_mat->n), &(mat->n), sizeof(unsigned int), cudaMemcpyHostToDevice));
     float** d_data;
     float* d_blk;
-    ASSERT_NO_ERR(cudaMalloc((void **)&d_data, mat->m*sizeof(float*)));
-    ASSERT_NO_ERR(cudaMalloc((void **)&d_blk, mat->m*mat->n*sizeof(float)));
+    ASSERT_NO_ERR(cudaMalloc((void**)&d_data, mat->m*sizeof(float*)));
+    ASSERT_NO_ERR(cudaMalloc((void**)&d_blk, mat->m*mat->n*sizeof(float)));
     ASSERT_NO_ERR(cudaMemcpy(d_blk, mat->data[0], mat->m*mat->n*sizeof(float), cudaMemcpyHostToDevice));
     float* addr[mat->m];
     for (unsigned int i=0; i<mat->m; i++) {
@@ -133,12 +133,12 @@ void device_free_matrix(matrix_t d_mat) {
 
 model_t h2d_model(model_t mdl) {
     model_t d_mdl;
-    ASSERT_NO_ERR(cudaMalloc((void **)&d_mdl, sizeof(model_s)));
+    ASSERT_NO_ERR(cudaMalloc((void**)&d_mdl, sizeof(model_s)));
     ASSERT_NO_ERR(cudaMemcpy(&(d_mdl->num_layer), &(mdl->num_layer), sizeof(unsigned int), cudaMemcpyHostToDevice));
     matrix_t* d_weights;
     vector_t* d_biases;
-    ASSERT_NO_ERR(cudaMalloc((void **)&d_weights, mdl->num_layer*sizeof(matrix_t*)));
-    ASSERT_NO_ERR(cudaMalloc((void **)&d_biases, mdl->num_layer*sizeof(vector_t*)));
+    ASSERT_NO_ERR(cudaMalloc((void**)&d_weights, mdl->num_layer*sizeof(matrix_t*)));
+    ASSERT_NO_ERR(cudaMalloc((void**)&d_biases, mdl->num_layer*sizeof(vector_t*)));
     for (unsigned int i=0; i<mdl->num_layer; i++) {
         matrix_t d_m = h2d_matrix(mdl->weights_list[i]);
         vector_t d_v = h2d_vector(mdl->bias_list[i]);

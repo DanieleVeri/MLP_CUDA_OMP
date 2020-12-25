@@ -1,7 +1,7 @@
-.PHONY: clean openmp cuda dist
+.PHONY: clean openmp openmp_dbg cuda cuda_legacy cuda_dbg dist
+
 CC = gcc 
-CFLAGS = -std=c99 -Wall -Wpedantic -g
-#assembler: -S -ffunction-sections
+CFLAGS = -std=c99 -Wall -Wpedantic
 OMP_CFLAGS = -fopenmp 
 OMP_LIBS = -lgomp -lm
 OMP_INCLUDES = -Isrc -Isrc/utils -Isrc/openmp
@@ -9,28 +9,34 @@ OMP_SRCS = src/main_omp.c $(wildcard src/utils/*.c) $(wildcard src/openmp/*.c)
 OMP_MAIN = mlp_omp
 
 CUDA_CC = nvcc
-CUDA_FLAGS =
-cuda_legacy: CUDA_FLAGS += --gpu-architecture compute_20 --Wno-deprecated-gpu-targets
+CUDA_FLAGS = -D NO_CUDA_CHECK_ERROR
 CUDA_INCLUDES = -Isrc -Isrc/utils -Isrc/cuda
 CUDA_SRCS = $(wildcard src/cuda/*.cu)
 CUDA_C_SRCS = src/main_cuda.c $(wildcard src/utils/*.c)
 CUDA_MAIN = mlp_cuda
 
+# debug targets
+cuda_dbg openmp_dbg: CFLAGS += -g
+cuda_dbg: CUDA_FLAGS += -U NO_CUDA_CHECK_ERROR
+
+# cuda legacy
+cuda_legacy: CUDA_FLAGS += --gpu-architecture compute_20 --Wno-deprecated-gpu-targets
+
 # build targets
 all:	openmp cuda
 	@echo --All targets are built.
-openmp:	$(OMP_MAIN)
+openmp openmp_dbg:	$(OMP_MAIN)
 	@echo --Builded target OPENMP
-cuda cuda_legacy: $(CUDA_MAIN)
+cuda cuda_legacy cuda_dbg: $(CUDA_MAIN)
 	@echo --Builded target CUDA
 clean:
 	$(RM) src/*.o src/**/*.o *~ $(CUDA_MAIN) $(OMP_MAIN)
 
 # run targets
-run_omp_4: openmp
-	OMP_NUM_THREADS=4 ./$(OMP_MAIN) 800000 100
+run_omp: openmp
+	./$(OMP_MAIN)  800000 100
 run_cuda: cuda
-	./$(CUDA_MAIN) 800000 50
+	./$(CUDA_MAIN) 800000 70
 
 dist: clean
 	@zip -r VeriDaniele.zip .
