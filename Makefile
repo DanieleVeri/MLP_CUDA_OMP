@@ -1,4 +1,4 @@
-.PHONY: clean openmp openmp_dbg cuda cuda_legacy cuda_dbg dist
+.PHONY: clean openmp openmp_dbg cuda cuda_legacy cuda_dbg
 
 CC = gcc 
 CFLAGS = -std=c99 -Wall -Wpedantic
@@ -31,16 +31,6 @@ cuda cuda_legacy cuda_dbg: $(CUDA_MAIN)
 	@echo --Builded target CUDA
 clean:
 	$(RM) src/*.o src/**/*.o *~ $(CUDA_MAIN) $(OMP_MAIN)
-
-# run targets
-run_omp: openmp
-	./$(OMP_MAIN)  800000 100
-run_cuda: cuda
-	./$(CUDA_MAIN) 800000 70
-
-dist: clean
-	@zip -r VeriDaniele.zip .
-	@echo --Generated zip
 
 OMP_OBJS = $(OMP_SRCS:.c=.o)
 CUDA_OBJS = $(CUDA_SRCS:.cu=.o)
