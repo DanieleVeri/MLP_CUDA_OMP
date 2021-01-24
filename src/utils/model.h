@@ -49,7 +49,7 @@ matrix_t serial_forward_mlp(matrix_t input_batch, model_t model);
 
 // branchless RELU
 #define RELU(x) ((x) * ((x) > 0))
-#define SIGM(x) (1/(1+exp((x))))
+#define SIGM(x) (1/(1+exp(-(x))))
 #define ACTIVATION SIGM
 
 #define EPS 1e-5

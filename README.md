@@ -1,12 +1,12 @@
 # Architectures and platforms for AI -- Module 2
-## OpenMP and CUDA implementations of a MLP (2020/2021)
+## OpenMP and CUDA implementations of a locally connected MLP (2020/2021)
 ### by Daniele Verì
 ___
 ## Requirements
 - `gcc` and `make` (both found in build-essential)
 - `nvcc`
 ___
-## Intructions
+## Build
 |command|description|
 |-|-|
 |`make`| build all
@@ -16,6 +16,22 @@ ___
 |`make cuda_dbg`| build CUDA debug
 |`make cuda_legacy`| build CUDA for arch `compute_20` (cuda version < 9)
 |`make clean`| clean objects
+
+## Run
+Once builded the source you can just launch the executables passing the mandatory arguments N and K:
+- `./mlp_omp N K`
+- `./mlp_cuda N K`
+
+## Profile
+In order to profile the programs on the local machine just run:
+
+`cd profile && ./local_profile`
+
+Otherwise you can profile the code on a target machine with the ssh server enabled by launching:
+
+`cd profile && ./remote_profile CERTIFICATE USER@HOST`
 ___
 ## TODO
-- performance considerations in logging
+- comments
+- omp tiling
+- cuda cache/shared
