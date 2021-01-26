@@ -25,11 +25,7 @@ Once builded the source you can just launch the executables passing the mandator
 ## Profile
 In order to profile the programs on the local machine just run:
 
-`cd profile && ./local_profile`
-
-Otherwise you can profile the code on a target machine with the ssh server enabled by launching:
-
-`cd profile && ./remote_profile CERTIFICATE USER@HOST`
+`profile/local_profile`
 ___
 ## TODO
 - comments

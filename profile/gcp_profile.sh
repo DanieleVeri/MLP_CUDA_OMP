@@ -5,6 +5,9 @@ HOST=$2
 SSH_CERT=$3
 LOCAL_BIND=127.0.0.6
 
+echo "@@@@@@ WARNING: server fingerprint verification ignored @@@@@@"
+echo "@@@@@@ DO NOT USE this script for SENSITIVE data!       @@@@@@"
+
 SCRIPT=`realpath $0`
 SCRIPTPATH=`dirname $SCRIPT`
 

@@ -66,8 +66,8 @@ void assert_equal_matrix(matrix_t m1, matrix_t m2) {
     assert(m1->m == m2->m);
     assert(m1->n == m2->n);
     for(unsigned int i=0; i<m1->m; i++) 
-        for(unsigned int j=0; j<m1->n; j++) 
-            assert(fabs(m1->data[i][j] - m2->data[i][j]) < EPS);    
+        for(unsigned int j=0; j<m1->n; j++)
+            assert(fabs(m1->data[i][j] - m2->data[i][j]) < EPS);
 }
 
 model_t new_model(unsigned int inputs, unsigned int num_layer, init_t init_type) {

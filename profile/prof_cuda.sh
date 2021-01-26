@@ -8,9 +8,9 @@ cd /usr/local/cuda/samples/1_Utilities/deviceQuery && make > /dev/null && cd - >
 /usr/local/cuda/samples/1_Utilities/deviceQuery/deviceQuery > $SCRIPTPATH/gpu_local.txt
 
 # cuda profiling
-#echo "- Running CUDA nvprof ..."
-#$NVPROF --events all --metrics all --log-file $SCRIPTPATH/nvprof_local.txt \
-#$MLP_CUDA_EXE $N $K > /dev/null
+echo "- Running CUDA nvprof ..."
+$NVPROF --events all --metrics all --log-file $SCRIPTPATH/nvprof_local.txt \
+$MLP_CUDA_EXE $N $K > /dev/null
 
 # throughput
 echo "- Performing throughput test ..."
