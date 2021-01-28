@@ -36,6 +36,7 @@ matrix_t new_matrix(unsigned int m, unsigned int n, init_t init_type)
 {
     matrix_t mat = malloc(sizeof(vector_s));
     mat->m = m; mat->n = n;
+    // data block (contiguous)
     float* blk = (float*) malloc(m * n * sizeof(float));
     mat->data = (float**) malloc(m * sizeof(float*));
     for (unsigned int i=0; i<m; i++) {
@@ -110,10 +111,11 @@ matrix_t serial_forward_mlp(matrix_t input_batch, model_t model)
             // 3. process out layer (embarassingly parallelizable)
             for (unsigned int j=0; j<out_len; j++) {
                 float sum = b[j];
-                // 4. process neighbours
+                // 4. process neighbours (not worth to parallelize)
                 for (unsigned int k=0; k<R; k++) {
                     sum += w[j][k] * last_result->data[bn][j+k];
                 }
+                // since the model is a regressor, activations aren't applied to the last layer output.
                 next_result->data[bn][j] = (i != last_layer) ? ACTIVATION(sum) : sum;
             }
         }

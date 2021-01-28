@@ -22,7 +22,7 @@ for p in `seq $CORES`; do
     sum=0
     count=0
     for rep in `seq 5`; do
-        EXEC_TIME="$(OMP_NUM_THREADS=$p $MLP_OMP_EXE $N $K | grep -Po '(?<=(P1 time elapsed = )).*(?= s)')"
+        EXEC_TIME="$(OMP_NUM_THREADS=$p $MLP_OMP_EXE $N $K | grep -Po '(?<=(Parallel time elapsed = )).*(?= s)')"
         sum=$(echo "$sum + $EXEC_TIME" | bc)
         count=$(echo "$count + 1" | bc)
     done
@@ -41,7 +41,7 @@ for p in `seq $CORES`; do
     sum=0
     count=0
     for rep in `seq 5`; do
-        EXEC_TIME="$(OMP_NUM_THREADS=$p $MLP_OMP_EXE $PROB_SIZE $K | grep -Po '(?<=(P1 time elapsed = )).*(?= s)')"
+        EXEC_TIME="$(OMP_NUM_THREADS=$p $MLP_OMP_EXE $PROB_SIZE $K | grep -Po '(?<=(Parallel time elapsed = )).*(?= s)')"
         sum=$(echo "$sum + $EXEC_TIME" | bc)
         count=$(echo "$count + 1" | bc)
     done

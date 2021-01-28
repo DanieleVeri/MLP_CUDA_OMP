@@ -19,7 +19,7 @@ K=100
 echo "throughput for K = $K" > $SCRIPTPATH/throughput_local.txt
 for rep in `seq 15`; do
     Ni=`echo "$Ni*2" | bc -l -q`
-    EXEC_TIME="$($MLP_CUDA_EXE $Ni $K | grep -Po '(?<=(P1 time elapsed = )).*(?= s)')"
+    EXEC_TIME="$($MLP_CUDA_EXE $Ni $K | grep -Po '(?<=(Kernel time elapsed = )).*(?= s)')"
     PROB_SIZE=`echo "($Ni-2*($K+1))*$K" | bc -l -q` # assuming R=5
     THROUGHPUT=$(echo "scale=3; $PROB_SIZE/$EXEC_TIME" | bc)
     echo "$Ni N: $THROUGHPUT" >> $SCRIPTPATH/throughput_local.txt

@@ -27,8 +27,8 @@ int main(int argc, char** argv)
 
     //test_device_mem_leak();
 
-    matrix_t input_batch = new_matrix(BATCH_SIZE, N, RAND_UNIFORM);
-    model_t model = new_model(N, K, RAND_UNIFORM);
+    matrix_t input_batch = new_matrix_pinned(BATCH_SIZE, N, RAND_UNIFORM);
+    model_t model = new_model_pinned(N, K, RAND_UNIFORM);
     printf("Created input batch\n\n");
 
     // serial
@@ -37,19 +37,19 @@ int main(int argc, char** argv)
     double tstop = hpc_gettime();
     printf("Serial time elapsed = %f s\n\n", tstop - tstart);
 
-    // p1
+    // parallel
     tstart = hpc_gettime();
-    matrix_t output_p1 = cuda1_forward_mlp(input_batch, model);
+    matrix_t output_parallel = cuda_forward_mlp(input_batch, model);
     tstop = hpc_gettime();
-    printf("P1 time elapsed = %f s\n\n", tstop - tstart);
-    
-    assert_equal_matrix(output_serial, output_p1);
+    printf("Parallel time elapsed = %f s\n\n", tstop - tstart);
+
+    assert_equal_matrix(output_serial, output_parallel);
     printf("Test OK\n");
 
-    free_matrix(output_serial);
-    free_matrix(output_p1);
-    free_matrix(input_batch);
-    free_model(model);
+    free_matrix_pinned(output_serial);
+    free_matrix_pinned(output_parallel);
+    free_matrix_pinned(input_batch);
+    free_model_pinned(model);
 
     return EXIT_SUCCESS;
 }

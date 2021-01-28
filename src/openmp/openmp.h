@@ -8,6 +8,12 @@
 #include "../constants.h"
 #include "../utils/model.h"
 
-matrix_t omp1_forward_mlp(matrix_t input_batch, model_t model);
+/**
+ * Computes the MLP regressor output parallelizing with OpenMP.
+ * @param matrix_t input_batch where columns are features and rows are batch elements.
+ * @param model_t model which contains the list of weights and biases.
+ * @return matrix_t containing the output.
+ * */
+matrix_t omp_forward_mlp(matrix_t input_batch, model_t model);
 
 #endif

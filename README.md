@@ -25,9 +25,17 @@ Once builded the source you can just launch the executables passing the mandator
 ## Profile
 In order to profile the programs on the local machine just run:
 
-`profile/local_profile`
+`profile/local_profile.sh`
+
+To profile the OMP implementation on a remote machine with ssh server enabled just run:
+
+`profile/gcp_profile.sh USER HOST CERTIFICATE`
+
+To profile the CUDA implementation on a Google Colab instance with GPU:
+
+- open the `profile/colab_norebook.ipynb` on a Colab instance
+- set up a machine with public ip and ssh server enabled that accept a certificate as credential
+- upload on the colab instance BOTH public key and the certificate
+- run the first two cells, setting the actual server ip
+- on the local machine, just run `profile/colab_profile.sh SERVER_USER SERVER_HOST CERTIFICATE`
 ___
-## TODO
-- comments
-- omp tiling
-- cuda cache/shared

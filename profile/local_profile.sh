@@ -3,11 +3,11 @@
 SCRIPT=`realpath $0`
 SCRIPTPATH=`dirname $SCRIPT`
 
-#MLP_OMP_EXE=$SCRIPTPATH/../mlp_omp \
-#N=1000000 \
-#K=100 \
-#PERF=/home/dan/Desktop/linux/tools/perf/perf \
-#$SCRIPTPATH/prof_omp.sh
+MLP_OMP_EXE=$SCRIPTPATH/../mlp_omp \
+N=1000000 \
+K=100 \
+PERF=/home/dan/Desktop/linux/tools/perf/perf \
+$SCRIPTPATH/prof_omp.sh
 
 MLP_CUDA_EXE=$SCRIPTPATH/../mlp_cuda \
 N=100000 \
