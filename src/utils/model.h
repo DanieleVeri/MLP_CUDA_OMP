@@ -1,3 +1,9 @@
+/**
+ * @file model.h
+ * @author Daniele Verì
+ * @brief Data types definition and functions.
+ */
+
 #ifndef __MODEL__H
 #define __MODEL__H
 

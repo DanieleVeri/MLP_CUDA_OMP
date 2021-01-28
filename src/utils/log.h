@@ -1,3 +1,9 @@
+/**
+ * @file log.h
+ * @author Daniele Verì
+ * @brief Log utils
+ */
+
 #ifndef __IO__H
 #define __IO__H
 

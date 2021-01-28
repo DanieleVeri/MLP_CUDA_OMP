@@ -1,3 +1,9 @@
+/**
+ * @file cuda.h
+ * @author Daniele Verì
+ * @brief CUDA implementation.
+ */
+
 #ifndef __CUDA__H
 #define __CUDA__H
 

@@ -2,6 +2,7 @@
 
 SCRIPT=`realpath $0`
 SCRIPTPATH=`dirname $SCRIPT`
+mkdir -p $SCRIPTPATH/out
 
 MLP_OMP_EXE=$SCRIPTPATH/../mlp_omp \
 N=1000000 \

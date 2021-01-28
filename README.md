@@ -15,6 +15,7 @@ ___
 |`make cuda`| build CUDA implementation
 |`make cuda_dbg`| build CUDA debug
 |`make cuda_legacy`| build CUDA for arch `compute_20` (cuda version < 9)
+|`make doc`| create documentation with doxygen
 |`make clean`| clean objects
 
 ## Run

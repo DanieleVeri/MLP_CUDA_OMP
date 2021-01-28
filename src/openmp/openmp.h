@@ -1,3 +1,9 @@
+/**
+ * @file openmp.h
+ * @author Daniele Verì
+ * @brief OpenMP implementation.
+ */
+
 #ifndef __OPENMP__H
 #define __OPENMP__H
 

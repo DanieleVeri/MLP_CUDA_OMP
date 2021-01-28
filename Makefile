@@ -1,4 +1,4 @@
-.PHONY: clean openmp openmp_dbg cuda cuda_legacy cuda_dbg
+.PHONY: clean openmp openmp_dbg cuda cuda_legacy cuda_dbg doc
 
 CC = gcc 
 CFLAGS = -std=c99 -Wall -Wpedantic
@@ -31,6 +31,11 @@ cuda cuda_legacy cuda_dbg: $(CUDA_MAIN)
 	@echo --Builded target CUDA
 clean:
 	$(RM) src/*.o src/**/*.o *~ $(CUDA_MAIN) $(OMP_MAIN)
+	$(RM) -rf html *.html
+
+doc:
+	doxygen Doxyfile
+	ln -s html/files.html doc.html
 
 OMP_OBJS = $(OMP_SRCS:.c=.o)
 CUDA_OBJS = $(CUDA_SRCS:.cu=.o)

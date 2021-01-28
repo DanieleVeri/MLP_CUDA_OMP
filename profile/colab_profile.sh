@@ -10,6 +10,7 @@ echo "@@@@@@ DO NOT USE this script for SENSITIVE data!       @@@@@@"
 
 SCRIPT=`realpath $0`
 SCRIPTPATH=`dirname $SCRIPT`
+mkdir -p $SCRIPTPATH/out
 
 # setup local ssh tunnel
 echo "- Setting up tunnel ssh ..."

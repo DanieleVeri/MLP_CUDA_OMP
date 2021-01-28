@@ -4,7 +4,7 @@ SCRIPT=`realpath $0`
 SCRIPTPATH=`dirname $SCRIPT`
 
 echo "- Detecting CPU info ..."
-lscpu > cpu_local.txt
+lscpu > $SCRIPTPATH/cpu_local.txt
 
 # openmp statistics
 echo "- Running OPENMP perf ..."
