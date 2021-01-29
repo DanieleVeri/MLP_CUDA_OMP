@@ -7,7 +7,7 @@ mkdir -p $SCRIPTPATH/out
 MLP_OMP_EXE=$SCRIPTPATH/../mlp_omp \
 N=1000000 \
 K=100 \
-PERF=/home/dan/Desktop/linux/tools/perf/perf \
+PERF=perf \
 $SCRIPTPATH/prof_omp.sh
 
 MLP_CUDA_EXE=$SCRIPTPATH/../mlp_cuda \
