@@ -1,7 +1,10 @@
 #include "openmp.h"
+#include "../utils/hpc.h"
 
 matrix_t omp_forward_mlp(matrix_t input_batch, model_t model)
 {
+    // not parallelized time counter
+    double acc = 0;
     const unsigned int batch_size = input_batch->m;
     const unsigned int last_layer = model->num_layer-1;
     // buffer holding the last layer output
@@ -11,7 +14,11 @@ matrix_t omp_forward_mlp(matrix_t input_batch, model_t model)
         const unsigned int out_len = model->bias_list[i]->len;
         const float** w = (const float**) model->weights_list[i]->data;
         const float* b = (const float*) model->bias_list[i]->data;
+
+        // allocates the layer output buffer (not parallelized operation)
+        double t = hpc_gettime();
         matrix_t next_result = new_matrix(batch_size, out_len, ZERO);
+        acc += hpc_gettime() - t;
 
         // omp directives: parallelize over both the elements of the layer output and the batch elements; 
         // schedule type static since the predictale amount of work; 
@@ -30,9 +37,13 @@ matrix_t omp_forward_mlp(matrix_t input_batch, model_t model)
                 next_result->data[bn][j] = (i != last_layer) ? ACTIVATION(sum) : sum;
             }
         }
-        // move next_result in last_result
-        if (i > 0) free_matrix(last_result);
+        // move next_result in last_result and free the last buffer (not parallelized operation)
+        t = hpc_gettime();
+        if (i > 0) 
+            free_matrix(last_result);
         last_result = next_result;
+        acc += hpc_gettime() - t;
     }
+    printf("Not parallelized time = %f s\n", acc);
     return last_result;
 }

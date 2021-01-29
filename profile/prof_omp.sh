@@ -6,13 +6,32 @@ SCRIPTPATH=`dirname $SCRIPT`
 echo "- Detecting CPU info ..."
 lscpu > $SCRIPTPATH/cpu_local.txt
 
-# openmp statistics
+# perf profiler statistics
 echo "- Running OPENMP perf ..."
 $PERF stat -B -o $SCRIPTPATH/perf_local.txt -e \
 task-clock,cycles,branches,branch-misses,cache-references,cache-misses,\
 L1-dcache-loads,L1-dcache-load-misses,\
 L1-dcache-stores,L1-dcache-store-misses \
 $MLP_OMP_EXE $N $K > /dev/null
+
+# Amdahl's law
+echo "- Performing maximum speedup test ..."
+sum=0
+count=0
+for rep in `seq 3`; do
+    OUT="$(OMP_NUM_THREADS=1 $MLP_OMP_EXE $N $K)"
+    NPT="$(echo $OUT | grep -Po '(?<=(Not parallelized time = )).*(?= s P)')"
+    TT="$(echo $OUT | grep -Po '(?<=(Parallel time elapsed = )).*(?= s)')"
+    sum=$(echo "scale=3; $sum + ($NPT / $TT)" | bc)
+    count=$(echo "$count + 1" | bc)
+done
+ALPHA=$(echo "scale=3; $sum / $count" | bc)
+ASINT=$(echo "scale=3; 1/$ALPHA" | bc)
+echo "Asintotic speedup according Amdahl law: $ASINT" > $SCRIPTPATH/amdahl_local.txt
+for cores in `seq 16`; do
+    SPEEDUP=$(echo "scale=3; 1 / ($ALPHA + (1-$ALPHA)/$cores)" | bc)
+    echo "cores: $cores -> speedup: $SPEEDUP" >> $SCRIPTPATH/amdahl_local.txt
+done
 
 # strong scaling
 echo "- Performing OPENMP strong scaling test ..."

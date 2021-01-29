@@ -1,9 +1,11 @@
-#include "utils/hpc.h"
 #include "constants.h"
 #include "utils/model.h"
 #include "utils/log.h"
 #include "openmp/openmp.h"
 #include <stdio.h>
+
+// implemented in hpc.h
+extern double hpc_gettime();
 
 int main(int argc, char** argv)
 {

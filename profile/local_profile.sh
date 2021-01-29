@@ -5,7 +5,7 @@ SCRIPTPATH=`dirname $SCRIPT`
 mkdir -p $SCRIPTPATH/out
 
 MLP_OMP_EXE=$SCRIPTPATH/../mlp_omp \
-N=1000000 \
+N=100000 \
 K=100 \
 PERF=perf \
 $SCRIPTPATH/prof_omp.sh

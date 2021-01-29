@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-USER$1
+USER=$1
 HOST=$2
 SSH_CERT=$3
 LOCAL_BIND=127.0.0.6
