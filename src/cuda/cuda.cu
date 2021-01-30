@@ -117,7 +117,8 @@ __host__ void free_vector_pinned(vector_t vector)
     cudaSafeCall(cudaFreeHost(vector));
 }
 
-__host__ vector_t h2d_vector(vector_t vec) {
+__host__ vector_t h2d_vector(vector_t vec) 
+{
     // alloc the struct
     vector_t d_vec;
     cudaSafeCall(cudaMalloc((void**)&d_vec, sizeof(vector_s)));
@@ -130,7 +131,8 @@ __host__ vector_t h2d_vector(vector_t vec) {
     return d_vec;
 }
 
-__host__ vector_t d2h_vector(vector_t d_vec) {
+__host__ vector_t d2h_vector(vector_t d_vec) 
+{
     // copy on host the struct
     vector_t vec;
     cudaSafeCall(cudaMallocHost(&vec, sizeof(vector_s)));
@@ -143,7 +145,8 @@ __host__ vector_t d2h_vector(vector_t d_vec) {
     return vec;
 }
 
-__host__ void device_free_vector(vector_t d_vec) {
+__host__ void device_free_vector(vector_t d_vec) 
+{
     float* d_data;
     cudaSafeCall(cudaMemcpy(&d_data, &d_vec->data, sizeof(float*), cudaMemcpyDeviceToHost));
     cudaSafeCall(cudaFree(d_data));
@@ -187,7 +190,8 @@ __host__ void free_matrix_pinned(matrix_t matrix)
     cudaSafeCall(cudaFreeHost(matrix));
 }
 
-__host__ matrix_t h2d_matrix(matrix_t mat) {
+__host__ matrix_t h2d_matrix(matrix_t mat) 
+{
     // copy on device the struct
     matrix_t d_mat;
     cudaSafeCall(cudaMalloc((void**)&d_mat, sizeof(matrix_s)));
@@ -209,7 +213,8 @@ __host__ matrix_t h2d_matrix(matrix_t mat) {
     return d_mat;
 }
 
-__host__ matrix_t d2h_matrix(matrix_t d_mat) {
+__host__ matrix_t d2h_matrix(matrix_t d_mat) 
+{
     // copy struct to host
     matrix_t mat;
     cudaSafeCall(cudaMallocHost(&mat, sizeof(matrix_s)));
@@ -230,7 +235,8 @@ __host__ matrix_t d2h_matrix(matrix_t d_mat) {
     return mat;
 }
 
-__host__ void device_free_matrix(matrix_t d_mat) {
+__host__ void device_free_matrix(matrix_t d_mat) 
+{
     float** d_data;
     cudaSafeCall(cudaMemcpy(&d_data, &d_mat->data, sizeof(float**), cudaMemcpyDeviceToHost));
     float *d_blk;
@@ -257,7 +263,8 @@ __host__ model_t new_model_pinned(unsigned int inputs, unsigned int num_layer, i
     return obj;
 }
 
-__host__ void free_model_pinned(model_t model) {
+__host__ void free_model_pinned(model_t model) 
+{
     for (unsigned int i=0; i<model->num_layer; i++) {
         free_matrix_pinned(model->weights_list[i]);
         free_vector_pinned(model->bias_list[i]);
@@ -267,7 +274,8 @@ __host__ void free_model_pinned(model_t model) {
     cudaSafeCall(cudaFreeHost(model));
 }
 
-__host__ model_t h2d_model(model_t mdl) {
+__host__ model_t h2d_model(model_t mdl) 
+{
     // copy struct to device
     model_t d_mdl;
     cudaSafeCall(cudaMalloc((void**)&d_mdl, sizeof(model_s)));
@@ -289,7 +297,8 @@ __host__ model_t h2d_model(model_t mdl) {
     return d_mdl;
 }
 
-__host__ void device_free_model(model_t d_mdl) {
+__host__ void device_free_model(model_t d_mdl) 
+{
     // copy to host the pointer lists, than free each element
     matrix_t* d_weights;
     vector_t* d_biases;
@@ -310,7 +319,8 @@ __host__ void device_free_model(model_t d_mdl) {
     cudaSafeCall(cudaFree(d_mdl));
 }
 
-__host__ void test_device_mem_leak() {
+__host__ void test_device_mem_leak() 
+{
     const unsigned int cycles = 1000;
     vector_t vec = new_vector_pinned(1000, RAND_UNIFORM);
     matrix_t mat = new_matrix_pinned(1000, 1000, RAND_UNIFORM);

@@ -11,8 +11,10 @@ ___
 |-|-|
 |`make`| build all
 |`make openmp`| build openMP implementation
+|`make openmp_release`| build openMP release
 |`make openmp_dbg`| build openMP debug
 |`make cuda`| build CUDA implementation
+|`make cuda_release`| build CUDA release
 |`make cuda_dbg`| build CUDA debug
 |`make cuda_legacy`| build CUDA for arch `compute_20` (cuda version < 9)
 |`make doc`| create documentation with doxygen

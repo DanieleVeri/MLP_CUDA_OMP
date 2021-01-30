@@ -15,6 +15,11 @@ CUDA_SRCS = $(wildcard src/cuda/*.cu)
 CUDA_C_SRCS = src/main_cuda.c $(wildcard src/utils/*.c)
 CUDA_MAIN = mlp_cuda
 
+#release targets
+openmp_release: CFLAGS += -O2
+cuda_release: CUDA_FLAGS += -O2
+cuda_release: CFLAGS += -O2
+
 # debug targets
 cuda_dbg openmp_dbg: CFLAGS += -g
 cuda_dbg: CUDA_FLAGS += -U NO_CUDA_CHECK_ERROR
@@ -25,9 +30,9 @@ cuda_legacy: CUDA_FLAGS += --gpu-architecture compute_20 --Wno-deprecated-gpu-ta
 # build targets
 all:	openmp cuda
 	@echo --All targets are built.
-openmp openmp_dbg:	$(OMP_MAIN)
+openmp openmp_dbg openmp_release:	$(OMP_MAIN)
 	@echo --Builded target OPENMP
-cuda cuda_legacy cuda_dbg: $(CUDA_MAIN)
+cuda cuda_legacy cuda_dbg cuda_release: $(CUDA_MAIN)
 	@echo --Builded target CUDA
 clean:
 	$(RM) src/*.o src/**/*.o *~ $(CUDA_MAIN) $(OMP_MAIN)

@@ -26,7 +26,8 @@ void free_vector(vector_t vector)
     free(vector);
 }
 
-void assert_equal_vector(vector_t v1, vector_t v2) {
+void assert_equal_vector(vector_t v1, vector_t v2) 
+{
     assert(v1->len == v2->len);
     for(unsigned int i=0; i<v1->len; i++) 
         assert(fabs(v1->data[i] - v2->data[i]) < EPS);
@@ -63,7 +64,8 @@ void free_matrix(matrix_t matrix)
     free(matrix);
 }
 
-void assert_equal_matrix(matrix_t m1, matrix_t m2) {
+void assert_equal_matrix(matrix_t m1, matrix_t m2) 
+{
     assert(m1->m == m2->m);
     assert(m1->n == m2->n);
     for(unsigned int i=0; i<m1->m; i++) 
@@ -71,7 +73,8 @@ void assert_equal_matrix(matrix_t m1, matrix_t m2) {
             assert(fabs(m1->data[i][j] - m2->data[i][j]) < EPS);
 }
 
-model_t new_model(unsigned int inputs, unsigned int num_layer, init_t init_type) {
+model_t new_model(unsigned int inputs, unsigned int num_layer, init_t init_type) 
+{
     model_t obj = malloc(sizeof(model_s));
     obj->num_layer = num_layer;
     obj->weights_list = (matrix_t*) malloc(num_layer * sizeof(matrix_t));
@@ -85,7 +88,8 @@ model_t new_model(unsigned int inputs, unsigned int num_layer, init_t init_type)
     return obj;
 }
 
-void free_model(model_t model) {
+void free_model(model_t model) 
+{
     for (unsigned int i=0; i<model->num_layer; i++) {
         free_matrix(model->weights_list[i]);
         free_vector(model->bias_list[i]);
